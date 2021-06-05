@@ -1,8 +1,9 @@
-name: 'Netlify Pull Request Previews'
+name: 'Netlify Branch Previews'
 
 on:
-  pull_request:
-    types: ['opened', 'edited', 'synchronize']
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   deploy:
@@ -18,7 +19,7 @@ jobs:
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          deploy_alias: ${{ env.BRANCH_NAME }}-${{ github.event.pull_request.number }}
+          deploy_alias: ${{ env.BRANCH_NAME }}
       
       # Creates a status check with link to preview
       - name: Status check
@@ -27,4 +28,4 @@ jobs:
           authToken: ${{ secrets.GITHUB_TOKEN }}
           context: Netlify preview
           state: success
-          target_url: https://${{ env.BRANCH_NAME }}-${{ github.event.pull_request.number }}--stepsurf.netlify.app
+          target_url: https://${{ env.BRANCH_NAME }}--seller-portal.netlify.app
